@@ -1,0 +1,21 @@
+.gnb {
+  height: 50px;
+  line-height: 50px;
+
+  ul {
+    display: flex;
+
+    li {
+      flex: 1;
+    }
+  }
+
+  a {
+    color: red; // 전역으로 관리
+    text-decoration: none;
+
+    &:visited {
+      text-decoration: none;
+    }
+  }
+}
