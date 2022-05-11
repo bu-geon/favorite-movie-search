@@ -11,14 +11,14 @@ import {
   SetRecoilState,
   SetterOrUpdater,
   Resetter,
-} from 'recoil'
+} from 'recoil';
 
-export { atom, selector, useRecoilState, useSetRecoilState, useRecoilValue, useResetRecoilState, useRecoilCallback }
+export { atom, selector, useRecoilState, useSetRecoilState, useRecoilValue, useResetRecoilState, useRecoilCallback };
 
-export type { SetterOrUpdater, Resetter, GetRecoilValue, SetRecoilState }
+export type { SetterOrUpdater, Resetter, GetRecoilValue, SetRecoilState };
 
 export function useRecoil<T>(recoilState: RecoilState<T>): [T, SetterOrUpdater<T>, Resetter] {
-  const [value, setter] = useRecoilState(recoilState)
-  const resetter = useResetRecoilState(recoilState)
-  return [value, setter, resetter]
+  const [value, setter] = useRecoilState(recoilState);
+  const resetter = useResetRecoilState(recoilState);
+  return [value, setter, resetter];
 }

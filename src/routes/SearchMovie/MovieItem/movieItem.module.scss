@@ -1,0 +1,23 @@
+.movieCard {
+  display: flex;
+  width: 100%;
+  color: wheat;
+  border: 1px solid white;
+  border-radius: 20px;
+}
+
+.title {
+}
+
+.year {
+}
+
+.type {
+}
+
+.poster {
+  width: 130px;
+  height: 185px;
+  object-fit: cover;
+  border-radius: 20px;
+}

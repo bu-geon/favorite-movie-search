@@ -17,6 +17,13 @@
   background-color: #13131d;
   border-radius: 40px;
 
+  main {
+    max-height: calc(100% - 70px);
+    padding: 0 20px;
+    margin-top: 20px;
+    overflow-y: scroll;
+  }
+
   footer {
     position: absolute;
     bottom: 0;

@@ -1,33 +1,29 @@
-// import { axios } from 'hooks/worker';
-import { IWeatherAPIRes } from 'types/weather.d';
-
+import { IMovieApiRes } from 'types/movie.d';
 import axios from 'axios';
-
-const WEATHER_BASE_URL = 'https://api.openweathermap.org/data/2.5';
-
-interface Params {
-  lat: number;
-  lon: number;
-}
-
-// 37.494958, 126.844128
-// export const getWeatherForecast5DaysApi = (params: Params) =>
-//   axios.get<IWeatherAPIRes>(`${WEATHER_BASE_URL}/forecast`, {
-//     params: {
-//       ...params,
-//       appid: process.env.REACT_APP_WEATHER_APP_ID,
-//       units: 'metric',
-//     },
-//   });
 
 const SEARCH_MOVIE_BASE_URL = 'http://www.omdbapi.com';
 const API_KEY = process.env.REACT_APP_SEARCH_MOVIE_API_KEY;
 
-export const getSearchMovieApi = (s: string, page: number) =>
-  axios.get(SEARCH_MOVIE_BASE_URL, {
-    params: {
-      apikey: API_KEY,
-      s,
-      page,
-    },
-  });
+export const getSearchMovieApi = async (s: string, page: string) => {
+  const data: IMovieApiRes = await axios
+    .get(SEARCH_MOVIE_BASE_URL, {
+      params: {
+        apikey: API_KEY,
+        s,
+        page,
+      },
+    })
+    .then((res) => {
+      const response = res.data.Response === 'True';
+      return { response, search: res.data.Search, error: res.data.Error, totalResults: res.data.totalResults };
+    });
+
+  return { ...data };
+};
+
+export function* tGenerator() {
+  let value = 0;
+  while (true) {
+    yield (value += 1);
+  }
+}
