@@ -8,13 +8,13 @@ import styles from './Routes.module.scss';
 const App = () => {
   return (
     <div className={styles.app}>
-      <div className={styles.searchMovie}>
+      <div className={styles.searchMovieApp}>
         <main>
           <Routes>
             <Route path='/' element={<SearchMovie />} />
             <Route path='search' element={<SearchMovie />} />
             <Route path='favorite' element={<Favorite />} />
-            <Route path='*' element={<div>404</div>} />
+            <Route path='*' element={<div>잘못된 접근입니다.</div>} />
           </Routes>
         </main>
         <footer>

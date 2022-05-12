@@ -1,52 +1,62 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { ChangeEvent, FormEvent, useCallback, useRef, useState } from 'react';
 
-import { getSearchMovieApi } from 'services/movie';
-import { searchResultStore } from 'stores/movie';
-import { IMovieApiRes, IMovieItem } from 'types/movie';
 import MovieItem from './MovieItem';
+import { useMovieSearch } from 'hooks/movie';
 import styles from './searchMovie.module.scss';
 
 const SearchMovie = () => {
-  const [results, setResults] = useRecoilState<IMovieItem[]>(searchResultStore);
-  const [searchKeyword, setSearchKeyword] = useState('');
+  const [query, setQuery] = useState('');
+  const [pageNumber, setPageNumber] = useState(1);
 
-  const handleChangeKeyword = async (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchKeyword(e.currentTarget.value);
-    const { response, search }: IMovieApiRes = await getSearchMovieApi(e.currentTarget.value, '1');
-
-    // console.log(response, search, error, totalResults);
-    if (!response) {
-      setResults([]);
-      return;
-    }
-    setResults(search);
+  const handleQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.currentTarget.value);
+    setPageNumber(1);
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSearchKeyword('');
+    setQuery('');
   };
+
+  const { movies, hasMore, loading, errorMessage } = useMovieSearch(query, pageNumber);
+
+  const observer = useRef<IntersectionObserver>();
+  const lastMovieRef = useCallback(
+    (node: HTMLLIElement) => {
+      // if (loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          setPageNumber((prev) => prev + 1);
+        }
+      });
+
+      if (node) observer.current.observe(node);
+    },
+    [loading, hasMore]
+  );
 
   return (
     <>
       <h1>검색</h1>
       <form onSubmit={handleSubmit}>
         <input
-          className={styles.searchMovie}
-          value={searchKeyword}
-          onChange={handleChangeKeyword}
+          className={styles.searchQuery}
+          value={query}
+          onChange={handleQueryChange}
           placeholder='영화 제목을 입력해주세요.'
         />
       </form>
-      {results.length === 0 && <div>검색 결과가 없습니다. </div>}
+      {movies.length === 0 && <div>검색 결과가 없습니다. </div>}
       <ul>
-        {results.map((item) => (
-          <li key={item.imdbID}>
-            <MovieItem {...item} />
+        {movies.map((movie, index) => (
+          <li key={movie.imdbID} ref={index === movies.length - 1 ? lastMovieRef : null}>
+            <MovieItem {...movie} />
           </li>
         ))}
       </ul>
+      {loading && <div>검색중</div>}
+      {errorMessage && <div>{errorMessage}</div>}
     </>
   );
 };

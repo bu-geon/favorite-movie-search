@@ -4,13 +4,17 @@ import styles from './movieItem.module.scss';
 import { SyntheticEvent } from 'react';
 
 const MovieItem = ({ Title: title, Year: year, Type: type, Poster: poster }: IMovieItem) => {
+  const handleMovieClick = () => {
+    // console.log(title, 'clicked!!');
+  };
+
   const handleImgError = (e: SyntheticEvent<HTMLImageElement>) => {
     e.currentTarget.src = DefaultImg;
   };
 
   return (
     <>
-      <button className={styles.movieCard} type='button'>
+      <button className={styles.movieCard} type='button' onClick={handleMovieClick}>
         <img className={styles.poster} src={poster} onError={handleImgError} alt='movie poster' />
         <div>
           <h3 className={styles.title}>{title}</h3>

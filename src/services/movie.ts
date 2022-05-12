@@ -4,7 +4,7 @@ import axios from 'axios';
 const SEARCH_MOVIE_BASE_URL = 'http://www.omdbapi.com';
 const API_KEY = process.env.REACT_APP_SEARCH_MOVIE_API_KEY;
 
-export const getSearchMovieApi = async (s: string, page: string) => {
+export const getSearchMovieApi = async (s: string, page: number) => {
   const data: IMovieApiRes = await axios
     .get(SEARCH_MOVIE_BASE_URL, {
       params: {
@@ -15,15 +15,11 @@ export const getSearchMovieApi = async (s: string, page: string) => {
     })
     .then((res) => {
       const response = res.data.Response === 'True';
-      return { response, search: res.data.Search, error: res.data.Error, totalResults: res.data.totalResults };
+      const search = res.data.Search ?? [];
+      const error = res.data.Error ?? '';
+      const totalResults = res.data.totalResults ?? 0;
+      return { response, search, error, totalResults };
     });
 
   return { ...data };
 };
-
-export function* tGenerator() {
-  let value = 0;
-  while (true) {
-    yield (value += 1);
-  }
-}
