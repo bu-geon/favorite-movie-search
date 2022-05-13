@@ -20,7 +20,12 @@ const MovieItem = ({ Title: title, Year: year, Type: type, Poster: poster, imdbI
 
   return (
     <div className={styles.movieItem}>
-      <img className={styles.poster} src={poster} onError={handleImgError} alt='movie poster' />
+      <img
+        className={styles.poster}
+        src={poster !== 'N/A' ? poster : DefaultImg}
+        onError={handleImgError}
+        alt='movie poster'
+      />
       <div className={styles.info}>
         <h3 className={styles.title}>{title}</h3>
         <div className={styles.description}>
