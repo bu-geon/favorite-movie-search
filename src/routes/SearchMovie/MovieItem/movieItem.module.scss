@@ -1,7 +1,15 @@
 @use '/src/styles/constants/colors';
 
-.movieCard {
+.movieItem {
+  position: relative;
   display: flex;
+  height: 155px;
+  padding: 10px;
+  margin: 20px 0;
+  cursor: pointer;
+  background: linear-gradient(to bottom, #272936, #11121b);
+  border: 1px solid #272936;
+  border-radius: 25px;
 }
 
 .poster {

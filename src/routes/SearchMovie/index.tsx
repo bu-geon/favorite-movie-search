@@ -1,13 +1,33 @@
-import { ChangeEvent, FormEvent, useCallback, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, useCallback, useRef, useState, MouseEvent } from 'react';
 
 import MovieItem from './MovieItem';
 import { useMovieSearch } from 'hooks/movie';
 import styles from './searchMovie.module.scss';
 import PageTitle from 'components/PageTitle';
+import FavoriteModal from 'components/FavoriteModal';
+import { IMovieItem } from 'types/movie';
 
 const SearchMovie = () => {
   const [query, setQuery] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
+  const [selectedMovie, setSelectedMovie] = useState<IMovieItem | null>(null);
+
+  const { movies, hasMore, loading, errorMessage } = useMovieSearch(query, pageNumber);
+
+  const observer = useRef<IntersectionObserver>();
+  const lastMovieRef = useCallback(
+    (node: HTMLLIElement) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          setPageNumber((prev) => prev + 1);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [loading, hasMore]
+  );
 
   const handleQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
     setQuery(e.currentTarget.value);
@@ -19,22 +39,9 @@ const SearchMovie = () => {
     setQuery('');
   };
 
-  const { movies, hasMore, loading, errorMessage } = useMovieSearch(query, pageNumber);
-
-  const observer = useRef<IntersectionObserver>();
-  const lastMovieRef = useCallback(
-    (node: HTMLLIElement) => {
-      // if (loading) return;
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          setPageNumber((prev) => prev + 1);
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
-    [loading, hasMore]
-  );
+  const handleOpenFavoriteModal = (e: MouseEvent<HTMLLIElement>) => {
+    setSelectedMovie(movies[e.currentTarget.value]);
+  };
 
   return (
     <>
@@ -51,10 +58,11 @@ const SearchMovie = () => {
       <ul>
         {movies.map((movie, index) => (
           <li
-            className={styles.movieItem}
             key={movie.imdbID}
-            role='menuitem'
+            value={index}
+            onClick={handleOpenFavoriteModal}
             ref={index === movies.length - 1 ? lastMovieRef : null}
+            role='menuitem'
           >
             <MovieItem {...movie} />
           </li>
@@ -62,6 +70,7 @@ const SearchMovie = () => {
       </ul>
       {loading && <div>검색중</div>}
       {errorMessage && <div>{errorMessage}</div>}
+      {selectedMovie && <FavoriteModal selectedMovie={selectedMovie} setSelectedMovie={setSelectedMovie} />}
     </>
   );
 };

@@ -1,0 +1,23 @@
+.modalButton {
+  position: absolute;
+  top: calc(50vh - 100px);
+  left: calc(50vw - 100px);
+  box-sizing: border-box;
+  color: grey;
+
+  .title {
+    width: 200px;
+    height: 200px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 200px;
+    text-align: center;
+    background-color: white;
+  }
+
+  button {
+    width: 50%;
+    height: 50px;
+    background-color: gold;
+  }
+}

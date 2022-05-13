@@ -6,8 +6,3 @@ export const searchResultStore = atom<IMovieItem[]>({
   key: '#searchResultState',
   default: [],
 });
-
-export const favoriteListStore = atom<IMovieItem[]>({
-  key: '#favoriteListState',
-  default: [],
-});
