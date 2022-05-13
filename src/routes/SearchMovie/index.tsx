@@ -11,8 +11,8 @@ const SearchMovie = () => {
   const [query, setQuery] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
   const [selectedMovie, setSelectedMovie] = useState<IMovieItem | null>(null);
-
   const { movies, hasMore, loading, errorMessage } = useMovieSearch(query, pageNumber);
+  const [isOnModal, setIsOnModal] = useState(false);
 
   const observer = useRef<IntersectionObserver>();
   const lastMovieRef = useCallback(
@@ -40,6 +40,7 @@ const SearchMovie = () => {
   };
 
   const handleOpenFavoriteModal = (e: MouseEvent<HTMLLIElement>) => {
+    setIsOnModal(true);
     setSelectedMovie(movies[e.currentTarget.value]);
   };
 
@@ -70,7 +71,7 @@ const SearchMovie = () => {
       </ul>
       {loading && <div>검색중</div>}
       {errorMessage && <div>{errorMessage}</div>}
-      {selectedMovie && <FavoriteModal selectedMovie={selectedMovie} setSelectedMovie={setSelectedMovie} />}
+      {isOnModal && <FavoriteModal action='ADD' selectedMovie={selectedMovie!} setIsOnModal={setIsOnModal} />}
     </>
   );
 };

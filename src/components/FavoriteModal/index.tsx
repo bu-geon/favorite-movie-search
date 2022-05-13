@@ -4,29 +4,41 @@ import useLocalStorageState from 'use-local-storage-state';
 
 import styles from './favoriteModal.module.scss';
 
+const FAVORITE_BUTTON_ENUM = {
+  ADD: '추가',
+  REMOVE: '제거',
+};
+
 interface Props {
+  action: 'ADD' | 'REMOVE';
   selectedMovie: IMovieItem;
-  setSelectedMovie: (param: null) => void;
+  setIsOnModal: (param: boolean) => void;
 }
 
-const FavoriteButton = ({ selectedMovie, setSelectedMovie }: Props) => {
-  const [, setFavoriteList] = useLocalStorageState<IMovieItem[]>('favoriteList', {
+const FavoriteButton = ({ action, selectedMovie, setIsOnModal }: Props) => {
+  const [favoriteList, setFavoriteList] = useLocalStorageState<IMovieItem[]>('favoriteList', {
     ssr: true,
     defaultValue: [],
   });
 
   const handleOkayClick = () => {
-    setFavoriteList((prev) => [selectedMovie, ...prev]);
-    setSelectedMovie(null);
+    if (action === 'ADD') {
+      setFavoriteList((prev) => [selectedMovie, ...prev]);
+    }
+    if (action === 'REMOVE') {
+      const newFavoriteList = favoriteList.filter((movie) => movie.imdbID !== selectedMovie.imdbID);
+      setFavoriteList(() => [...newFavoriteList]);
+    }
+    setIsOnModal(false);
   };
 
   const handleCancelClick = () => {
-    setSelectedMovie(null);
+    setIsOnModal(false);
   };
 
   return (
     <div className={styles.modalButton}>
-      <h3 className={styles.title}>즐겨찾기 추가</h3>
+      <h3 className={styles.title}>즐겨찾기 {FAVORITE_BUTTON_ENUM[action]}</h3>
       <button type='button' onClick={handleOkayClick}>
         확인
       </button>
