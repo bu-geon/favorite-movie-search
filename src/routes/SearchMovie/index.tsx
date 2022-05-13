@@ -7,6 +7,7 @@ import PageTitle from 'components/PageTitle';
 import FavoriteModal from 'components/FavoriteModal';
 import { IMovieItem } from 'types/movie';
 import useLocalStorageState from 'use-local-storage-state';
+import Loading from 'components/Loading';
 
 const SearchMovie = () => {
   const [query, setQuery] = useState('');
@@ -60,7 +61,6 @@ const SearchMovie = () => {
           placeholder='영화 제목을 입력해주세요.'
         />
       </form>
-      {movies.length === 0 && <div>검색 결과가 없습니다. </div>}
       <ul>
         {movies.map((movie, index) => (
           <li
@@ -74,7 +74,8 @@ const SearchMovie = () => {
           </li>
         ))}
       </ul>
-      {loading && <div>검색중</div>}
+      {!loading && movies.length === 0 && <div className={styles.noResult}>검색 결과가 없습니다.</div>}
+      {loading && <Loading />}
       {errorMessage && <div>{errorMessage}</div>}
       {isOnModal && (
         <FavoriteModal

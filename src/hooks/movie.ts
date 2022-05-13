@@ -4,7 +4,7 @@ import { searchResultStore } from 'stores/movie';
 import { getSearchMovieApi } from 'services/movie';
 
 export const useMovieSearch = (query: string, pageNumber: number) => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
   const [movies, setMovies] = useRecoilState(searchResultStore);
   const [hasMore, setHasMore] = useState(false);
@@ -27,9 +27,11 @@ export const useMovieSearch = (query: string, pageNumber: number) => {
       setHasMore(pageNumber * 10 < totalResults);
     };
 
-    setLoading(true);
-    setErrorMessage(undefined);
-    fetchData();
+    if (query.length > 0) {
+      setLoading(true);
+      setErrorMessage(undefined);
+      fetchData();
+    }
   }, [query, pageNumber, setMovies]);
 
   return { loading, hasMore, errorMessage, movies };

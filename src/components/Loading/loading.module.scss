@@ -1,0 +1,38 @@
+.loadingContainer {
+  position: absolute;
+  top: 50%;
+  left: calc(50% - 45px);
+
+  h1 {
+    margin-bottom: 35px;
+    font-size: 20px;
+  }
+}
+
+.loading {
+  display: grid;
+  width: 90px;
+  height: 14px;
+  box-shadow: 0 3px 0 #ffffff;
+}
+
+.loading::before,
+.loading::after {
+  grid-area: 1/1;
+  content: '';
+  background: radial-gradient(circle closest-side, var(--c, red) 92%, #00000000) 0 0 / calc(100% / 4) 100%;
+  animation: f4 1s infinite linear;
+}
+
+.loading::after {
+  --c: #000000;
+  clip-path: inset(-2px calc(50% - 10px));
+  background-color: #ffffff;
+  box-shadow: 0 -2px 0 0 #ffffff;
+}
+
+@keyframes f4 {
+  100% {
+    background-position: calc(100% / 3) 0;
+  }
+}
