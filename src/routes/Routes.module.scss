@@ -5,6 +5,7 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
+  color: colors.$BASIC_FONT_COLOR;
   background-color: #4e5059;
 }
 
@@ -12,15 +13,18 @@
   position: relative;
   width: 350px;
   height: 700px;
-  color: wheat;
   text-align: center;
   background-color: #13131d;
   border-radius: 40px;
 
+  header {
+    margin-top: 20px;
+  }
+
   main {
     height: 100%;
     max-height: calc(100% - 70px);
-    padding: 0 20px;
+    padding: 0 45px;
     margin-top: 20px;
     overflow-y: scroll;
   }

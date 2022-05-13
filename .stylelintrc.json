@@ -31,6 +31,12 @@
         "ignoreProperties": ["appearance"]
       }
     ],
+    "value-no-vendor-prefix": [
+      true, 
+      {
+      "ignoreValues": ["box"]
+      }
+    ],
     "scale-unlimited/declaration-strict-value": [
       "color",
       {

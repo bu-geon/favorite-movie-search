@@ -9,6 +9,9 @@ const App = () => {
   return (
     <div className={styles.app}>
       <div className={styles.searchMovieApp}>
+        <header>
+          <h1>Search Favorite</h1>
+        </header>
         <main>
           <Routes>
             <Route path='/' element={<SearchMovie />} />

@@ -1,23 +1,50 @@
+@use '/src/styles/constants/colors';
+
 .movieCard {
   display: flex;
-  width: 100%;
-  color: wheat;
-  border: 1px solid white;
-  border-radius: 20px;
-}
-
-.title {
-}
-
-.year {
-}
-
-.type {
 }
 
 .poster {
-  width: 130px;
-  height: 185px;
-  object-fit: cover;
+  width: 100px;
   border-radius: 20px;
+}
+
+.info {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-self: stretch;
+  justify-content: space-between;
+  padding: 15px;
+  color: colors.$BASIC_FONT_COLOR;
+  text-align: left;
+
+  .title {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.5em;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .description {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: colors.$SUB_FONT_COLOR;
+  }
+}
+
+.bookmark {
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  width: 20px;
+  height: 20px;
+  fill: #b90e0a;
+  transform: rotate(0.5turn);
 }

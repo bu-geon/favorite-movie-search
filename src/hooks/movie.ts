@@ -9,7 +9,10 @@ export const useMovieSearch = (query: string, pageNumber: number) => {
   const [movies, setMovies] = useRecoilState(searchResultStore);
   const [hasMore, setHasMore] = useState(false);
 
+  console.log('next page?', pageNumber, hasMore);
+
   useEffect(() => {
+    if (query.length === 0) return;
     setMovies([]);
   }, [query, setMovies]);
 

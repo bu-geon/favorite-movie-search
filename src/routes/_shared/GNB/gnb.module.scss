@@ -1,3 +1,5 @@
+@use '/src/styles/constants/colors';
+
 .gnb {
   height: 50px;
   line-height: 50px;
@@ -11,7 +13,7 @@
   }
 
   a {
-    color: red; // 전역으로 관리
+    color: colors.$BASIC_FONT_COLOR;
     text-decoration: none;
 
     &:visited {
