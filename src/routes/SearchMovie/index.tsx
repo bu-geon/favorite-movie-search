@@ -6,6 +6,7 @@ import styles from './searchMovie.module.scss';
 import PageTitle from 'components/PageTitle';
 import FavoriteModal from 'components/FavoriteModal';
 import { IMovieItem } from 'types/movie';
+import useLocalStorageState from 'use-local-storage-state';
 
 const SearchMovie = () => {
   const [query, setQuery] = useState('');
@@ -13,6 +14,10 @@ const SearchMovie = () => {
   const [selectedMovie, setSelectedMovie] = useState<IMovieItem | null>(null);
   const { movies, hasMore, loading, errorMessage } = useMovieSearch(query, pageNumber);
   const [isOnModal, setIsOnModal] = useState(false);
+  const [favoriteList] = useLocalStorageState<IMovieItem[]>('favoriteList', {
+    ssr: true,
+    defaultValue: [],
+  });
 
   const observer = useRef<IntersectionObserver>();
   const lastMovieRef = useCallback(
@@ -71,7 +76,13 @@ const SearchMovie = () => {
       </ul>
       {loading && <div>검색중</div>}
       {errorMessage && <div>{errorMessage}</div>}
-      {isOnModal && <FavoriteModal action='ADD' selectedMovie={selectedMovie!} setIsOnModal={setIsOnModal} />}
+      {isOnModal && (
+        <FavoriteModal
+          action={favoriteList.find((movie) => movie.imdbID === selectedMovie?.imdbID) ? 'REMOVE' : 'ADD'}
+          selectedMovie={selectedMovie!}
+          setIsOnModal={setIsOnModal}
+        />
+      )}
     </>
   );
 };

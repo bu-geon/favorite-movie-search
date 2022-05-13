@@ -1,14 +1,22 @@
 import { IMovieItem } from 'types/movie';
 import DefaultImg from 'assets/imgs/default-img.jpg';
 import styles from './movieItem.module.scss';
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 
 import { Bookmark } from 'assets/svgs';
+import useLocalStorageState from 'use-local-storage-state';
 
-const MovieItem = ({ Title: title, Year: year, Type: type, Poster: poster }: IMovieItem) => {
+const MovieItem = ({ Title: title, Year: year, Type: type, Poster: poster, imdbID }: IMovieItem) => {
+  const [favoriteList] = useLocalStorageState<IMovieItem[]>('favoriteList', { ssr: true, defaultValue: [] });
+  const [isBookmark, setIsBookmark] = useState(false);
+
   const handleImgError = (e: SyntheticEvent<HTMLImageElement>) => {
     e.currentTarget.src = DefaultImg;
   };
+
+  useEffect(() => {
+    setIsBookmark(favoriteList.findIndex((movie) => movie.imdbID === imdbID) !== -1);
+  }, [favoriteList, imdbID]);
 
   return (
     <div className={styles.movieItem}>
@@ -20,7 +28,7 @@ const MovieItem = ({ Title: title, Year: year, Type: type, Poster: poster }: IMo
           <span className={styles.type}>{type}</span>
         </div>
       </div>
-      <Bookmark className={styles.bookmark} />
+      {isBookmark && <Bookmark className={styles.bookmark} />}
     </div>
   );
 };

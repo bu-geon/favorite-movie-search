@@ -4,6 +4,7 @@ export interface IMovieItem {
   imdbID: string;
   Type: string;
   Poster: string;
+  isFavorite?: boolean;
 }
 
 export interface IMovieApiRes {
