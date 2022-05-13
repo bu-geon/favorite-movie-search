@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import cx from 'classnames';
 
 import styles from './gnb.module.scss';
 // import styles from './gnb.module.scss';
@@ -14,7 +15,9 @@ const GNB = () => {
       <ul>
         {LINKS.map((link) => (
           <li key={link.to}>
-            <NavLink to={link.to}>{link.title}</NavLink>
+            <NavLink className={({ isActive }) => cx(styles.navLink, { [styles.active]: isActive })} to={link.to}>
+              {link.title}
+            </NavLink>
           </li>
         ))}
       </ul>

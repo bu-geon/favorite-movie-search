@@ -1,8 +1,9 @@
 @use '/src/styles/constants/colors';
 
 .gnb {
-  height: 50px;
-  line-height: 50px;
+  height: 40px;
+  margin-top: 40px;
+  line-height: 40px;
 
   ul {
     display: flex;
@@ -14,10 +15,22 @@
 
   a {
     color: colors.$BASIC_FONT_COLOR;
-    text-decoration: none;
+  }
 
-    &:visited {
-      text-decoration: none;
+  .navLink {
+    letter-spacing: 2px;
+  }
+
+  .active {
+    position: relative;
+    font-weight: 700;
+    box-shadow: 0 40px 60px 5px #ffffff;
+
+    &::after {
+      position: absolute;
+      top: 50%;
+      left: calc(50% - 5px);
+      content: '•';
     }
   }
 }
