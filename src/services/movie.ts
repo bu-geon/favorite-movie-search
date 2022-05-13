@@ -1,7 +1,7 @@
 import { IMovieApiRes } from 'types/movie.d';
 import axios from 'axios';
 
-const SEARCH_MOVIE_BASE_URL = 'http://www.omdbapi.com';
+const SEARCH_MOVIE_BASE_URL = 'https://www.omdbapi.com';
 const API_KEY = process.env.REACT_APP_SEARCH_MOVIE_API_KEY;
 
 export const getSearchMovieApi = async (s: string, page: number) => {
