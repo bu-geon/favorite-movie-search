@@ -1,4 +1,4 @@
-import { IMovieApiRes } from 'types/movie.d';
+import { IMovieApiRes, IMovieItem } from 'types/movie.d';
 import axios from 'axios';
 
 const SEARCH_MOVIE_BASE_URL = 'https://www.omdbapi.com';
@@ -15,7 +15,11 @@ export const getSearchMovieApi = async (s: string, page: number) => {
     })
     .then((res) => {
       const response = res.data.Response === 'True';
-      const search = res.data.Search ?? [];
+      const search = res.data.Search?.reduce((acc: IMovieItem[], cur: IMovieItem) => {
+        if (acc.findIndex((el) => el.imdbID === cur.imdbID) === -1) acc.push(cur);
+
+        return acc;
+      }, []);
       const error = res.data.Error ?? '';
       const totalResults = res.data.totalResults ?? 0;
       return { response, search, error, totalResults };

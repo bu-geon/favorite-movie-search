@@ -39,7 +39,7 @@ const FavoriteButton = ({ action, selectedMovie, setIsOnModal }: Props) => {
   };
 
   // const handleOutSideModalClick = (e: MouseEvent) => {
-  //   if (modalRef.current?.contains(e.currentTarget)) setIsOnModal(false);
+  //   if (modalRef.current?.contains(e.target)) setIsOnModal(false);
   // };
 
   // useEffect(() => {
