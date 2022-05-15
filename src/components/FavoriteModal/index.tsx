@@ -1,4 +1,4 @@
-import { MouseEvent, MouseEventHandler, useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { IMovieItem } from 'types/movie';
 import useLocalStorageState from 'use-local-storage-state';
