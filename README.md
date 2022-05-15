@@ -4,7 +4,14 @@
 
  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=TypeScript&logoColor=white"/> <img src="https://img.shields.io/badge/React-3178C6?style=flat&logo=React&logoColor=#7ED0EF"/> <img src="https://img.shields.io/badge/Recoil-3178C6?style=flat&logo=Recoil&logoColor=white"/>
 
-### 트리 구조
+### 실행
+```
+git 클론 후
+yarn install
+yarn start
+```
+
+### 프로젝트 트리
 ```
 src
  ┣ assets     // svg, image 등
