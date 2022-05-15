@@ -6,3 +6,13 @@ export const searchResultStore = atom<IMovieItem[]>({
   key: '#searchResultState',
   default: [],
 });
+
+export const queryStore = atom({
+  key: '#query',
+  default: '',
+});
+
+export const pageNumberStore = atom({
+  key: '#pageNumber',
+  default: 1,
+});

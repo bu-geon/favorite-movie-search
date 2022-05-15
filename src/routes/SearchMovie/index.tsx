@@ -1,4 +1,7 @@
 import { ChangeEvent, FormEvent, useCallback, useRef, useState, MouseEvent } from 'react';
+import { useUnmount, useUpdateEffect } from 'react-use';
+import { useRecoilState } from 'recoil';
+import useLocalStorageState from 'use-local-storage-state';
 
 import MovieItem from './MovieItem';
 import { useMovieSearch } from 'hooks/movie';
@@ -6,15 +9,19 @@ import styles from './searchMovie.module.scss';
 import PageTitle from 'components/PageTitle';
 import FavoriteModal from 'components/FavoriteModal';
 import { IMovieItem } from 'types/movie';
-import useLocalStorageState from 'use-local-storage-state';
 import Loading from 'components/Loading';
+import { pageNumberStore, queryStore, searchResultStore } from 'stores/movie';
+
+let timer: NodeJS.Timeout;
 
 const SearchMovie = () => {
-  const [query, setQuery] = useState('');
-  const [pageNumber, setPageNumber] = useState(1);
+  const [userInput, setUserInput] = useState('');
+  const [, setQuery] = useRecoilState(queryStore);
+  const [, setPageNumber] = useRecoilState(pageNumberStore);
+  const [movies, setMovies] = useRecoilState(searchResultStore);
   const [selectedMovie, setSelectedMovie] = useState<IMovieItem | null>(null);
-  const { movies, hasMore, loading, errorMessage } = useMovieSearch(query, pageNumber);
   const [isOnModal, setIsOnModal] = useState(false);
+  const { hasMore, loading } = useMovieSearch();
   const [favoriteList] = useLocalStorageState<IMovieItem[]>('favoriteList', {
     ssr: true,
     defaultValue: [],
@@ -32,12 +39,11 @@ const SearchMovie = () => {
       });
       if (node) observer.current.observe(node);
     },
-    [loading, hasMore]
+    [loading, hasMore, setPageNumber]
   );
 
   const handleQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.currentTarget.value);
-    setPageNumber(1);
+    setUserInput(e.currentTarget.value);
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -50,15 +56,29 @@ const SearchMovie = () => {
     setSelectedMovie(movies[e.currentTarget.value]);
   };
 
+  useUpdateEffect(() => {
+    if (userInput.trim().length === 0) return;
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => {
+      setMovies([]);
+      setPageNumber(1);
+      setQuery(userInput);
+    }, 300);
+  }, [userInput, setQuery]);
+
+  useUnmount(() => {
+    clearTimeout(timer);
+  });
+
   return (
     <>
       <PageTitle title='검색' />
       <form onSubmit={handleSubmit}>
         <input
           className={styles.searchQuery}
-          value={query}
+          value={userInput}
           onChange={handleQueryChange}
-          placeholder='영화 제목을 입력해주세요.'
+          placeholder='영화 제목 입력(only English)'
         />
       </form>
       <ul>
@@ -76,7 +96,6 @@ const SearchMovie = () => {
       </ul>
       {!loading && movies.length === 0 && <div className={styles.noResult}>검색 결과가 없습니다.</div>}
       {loading && <Loading />}
-      {errorMessage && <div>{errorMessage}</div>}
       {isOnModal && (
         <FavoriteModal
           action={favoriteList.find((movie) => movie.imdbID === selectedMovie?.imdbID) ? 'REMOVE' : 'ADD'}

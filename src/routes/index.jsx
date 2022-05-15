@@ -15,7 +15,6 @@ const App = () => {
         <main>
           <Routes>
             <Route path='/' element={<SearchMovie />} />
-            <Route path='search' element={<SearchMovie />} />
             <Route path='favorite' element={<Favorite />} />
             <Route path='*' element={<div>잘못된 접근입니다.</div>} />
           </Routes>

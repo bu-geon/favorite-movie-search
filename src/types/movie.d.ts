@@ -1,10 +1,9 @@
 export interface IMovieItem {
-  Title: string;
-  Year: string;
+  title: string;
+  year: string;
   imdbID: string;
-  Type: string;
-  Poster: string;
-  isFavorite?: boolean;
+  type: string;
+  poster: string;
 }
 
 export interface IMovieApiRes {

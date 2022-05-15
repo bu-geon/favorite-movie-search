@@ -6,7 +6,7 @@ import { SyntheticEvent, useEffect, useState } from 'react';
 import { Bookmark } from 'assets/svgs';
 import useLocalStorageState from 'use-local-storage-state';
 
-const MovieItem = ({ Title: title, Year: year, Type: type, Poster: poster, imdbID }: IMovieItem) => {
+const MovieItem = ({ title, year, type, poster, imdbID }: IMovieItem) => {
   const [favoriteList] = useLocalStorageState<IMovieItem[]>('favoriteList', { ssr: true, defaultValue: [] });
   const [isBookmark, setIsBookmark] = useState(false);
 
