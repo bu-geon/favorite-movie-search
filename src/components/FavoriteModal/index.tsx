@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { MouseEvent, MouseEventHandler, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { IMovieItem } from 'types/movie';
 import useLocalStorageState from 'use-local-storage-state';
@@ -38,20 +38,12 @@ const FavoriteButton = ({ action, selectedMovie, setIsOnModal }: Props) => {
     setIsOnModal(false);
   };
 
-  // const handleOutSideModalClick = (e: MouseEvent) => {
-  //   if (modalRef.current?.contains(e.target)) setIsOnModal(false);
-  // };
-
-  // useEffect(() => {
-  //   document.addEventListener('click', handleOutSideModalClick);
-
-  //   return () => {
-  //     document.removeEventListener('click', handleOutSideModalClick);
-  //   };
-  // });
+  const handleOutSideModalClick = () => {
+    setIsOnModal(false);
+  };
 
   return (
-    <div className={styles.backdrop} ref={modalRef}>
+    <div className={styles.backdrop} ref={modalRef} onClick={handleOutSideModalClick} role='button' tabIndex={0}>
       <div className={styles.modalButton}>
         <h3 className={styles.title}>즐겨찾기 {FAVORITE_BUTTON_ENUM[action]}</h3>
         <button type='button' onClick={handleOkayClick}>
