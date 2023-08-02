@@ -1,6 +1,6 @@
 # 영화 검색 및 즐겨찾기 추가 웹
 
-[**배포 사이트**](https://silly-tapioca-8153ed.netlify.app)
+[**배포 사이트**](https://search4favoritemovies.netlify.app)
 
  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=TypeScript&logoColor=white"/> <img src="https://img.shields.io/badge/React-3178C6?style=flat&logo=React&logoColor=#7ED0EF"/> <img src="https://img.shields.io/badge/Recoil-3178C6?style=flat&logo=Recoil&logoColor=white"/>
 
